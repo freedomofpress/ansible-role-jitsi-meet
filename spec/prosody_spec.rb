@@ -26,4 +26,18 @@ describe file('/etc/prosody/conf.avail/localhost.cfg.lua') do
       'VirtualHost "auth.localhost"').before(
         'authentication = "internal_plain"')
   end
+
+  describe command('cat /etc/prosody/conf.avail/localhost.cfg.lua') do
+    regexp1 = /VirtualHost "auth\.localhost"/
+    regexp2 = /authentication = "internal_plain"/
+    regexp = /^#{regexp1}\n\s+#{regexp2}/m
+    its('stdout') { should match(regexp) }
+  end
+
+  its('content') do
+    should contain(
+      'VirtualHost "auth.localhost"').from(
+        /^$/).to(
+          'authentication = "internal_plain"')
+  end
 end
