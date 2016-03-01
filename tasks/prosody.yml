@@ -6,6 +6,8 @@
     owner: root
     group: root
     mode: "0644"
+    # Simply syntax check for validation, doesn't catch config errors.
+    validate: "luac -p %s"
   notify: restart prosody
 
 - name: Symlink Prosody config by domain name.

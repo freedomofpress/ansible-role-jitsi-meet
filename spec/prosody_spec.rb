@@ -43,10 +43,7 @@ describe file('/etc/prosody/conf.avail/localhost.cfg.lua') do
     end
   end
 
-  its('content') do
-    should contain(
-      'VirtualHost "auth.localhost"').from(
-        /^$/).to(
-          'authentication = "internal_plain"')
+  describe command('luac -p /etc/prosody/conf.avail/localhost.cfg.lua') do
+    its('exit_status') { should eq 0 }
   end
 end
