@@ -22,3 +22,15 @@ describe command('echo "get jitsi-meet-prosody/jvb-hostname" | \
                   debconf-communicate') do
   its('stdout') { should eq "0 localhost\n" }
 end
+
+describe file('/etc/jitsi/meet/localhost-config.js') do
+  it { should be_file }
+  it { should be_owned_by 'root' }
+  it { should be_grouped_into 'root' }
+  its('mode') { should eq '644' }
+  its('content') { should match(/^\s+domain: 'localhost',/) }
+  its('content') { should match(/^\s+muc: 'conference\.localhost',/) }
+  its('content') { should match(/^\s+bridge: 'jitsi-videobridge\.localhost',/) }
+  its('content') { should match(%r{^\s+bosh: '//localhost/http-bind',}) }
+  its('content') { should match(/^\s+disableThirdPartyRequests: true,/) }
+end
