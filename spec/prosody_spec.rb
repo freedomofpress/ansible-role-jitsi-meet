@@ -46,4 +46,20 @@ describe file('/etc/prosody/conf.avail/localhost.cfg.lua') do
   describe command('luac -p /etc/prosody/conf.avail/localhost.cfg.lua') do
     its('exit_status') { should eq 0 }
   end
+
+  describe file('/var/lib/prosody/auth%2elocalhost') do
+    it { should be_directory }
+    it { should be_owned_by 'prosody' }
+    it { should be_grouped_into 'prosody' }
+    its('mode') { should eq '750' }
+  end
+
+  describe file('/var/lib/prosody/auth%2elocalhost/accounts/focus.dat') do
+    it { should be_file }
+    it { should be_owned_by 'prosody' }
+    it { should be_grouped_into 'prosody' }
+    its('mode') { should eq '640' }
+    regexp = /^\s+\["password"\] = "\w+";$/
+    its('content') { should match(regexp) }
+  end
 end
