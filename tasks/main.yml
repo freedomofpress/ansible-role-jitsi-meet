@@ -16,4 +16,8 @@
   when: jitsi_meet_ssl_cert_path != '' and
         jitsi_meet_ssl_key_path != ''
 
+- include: clean_up_default_configs.yml
+  when: jitsi_meet_ssl_cert_path != '' and
+        jitsi_meet_ssl_key_path != ''
+
 - include: ufw.yml

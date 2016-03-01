@@ -7,9 +7,3 @@
     group: root
     mode: "0644"
   notify: restart jitsi-videobridge
-
-- name: Remove default localhost Jitsi Meet config file.
-  file:
-    path: /etc/jitsi/meet/localhost-config.js
-    state: absent
-  notify: restart jitsi-videobridge

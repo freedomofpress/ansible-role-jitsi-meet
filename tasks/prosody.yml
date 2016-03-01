@@ -31,17 +31,3 @@
   notify:
     - restart jicofo
     - restart prosody
-
-- name: Remove Jicofo user config for localhost site
-  file:
-    path: /var/lib/prosody/auth%2elocalhost
-    state: absent
-  notify:
-    - restart jicofo
-    - restart prosody
-
-- name: Remove default localhost Prosody config file.
-  file:
-    path: /etc/prosody/conf.d/localhost.cfg.lua
-    state: absent
-  notify: restart prosody
