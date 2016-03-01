@@ -2,4 +2,4 @@
 - name: Test jitsi-meet role
   hosts: all
   roles:
-    - role: jitsi-meet
+    - role: ansible-role-jitsi-meet
