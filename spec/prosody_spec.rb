@@ -27,11 +27,20 @@ describe file('/etc/prosody/conf.avail/localhost.cfg.lua') do
         'authentication = "internal_plain"')
   end
 
-  describe command('cat /etc/prosody/conf.avail/localhost.cfg.lua') do
-    regexp1 = /VirtualHost "auth\.localhost"/
-    regexp2 = /authentication = "internal_plain"/
+  wanted_config_line_pairs = {
+    'VirtualHost "auth.localhost"' => 'authentication = "internal_plain"',
+    'Component "conference.localhost" "muc"' =>
+      'admins = { "focus@auth.localhost" }',
+    'Component "jitsi-videobridge.localhost"' => 'component_secret = ',
+    'Component "focus.localhost"' => 'component_secret = '
+  }
+  wanted_config_line_pairs.each do |line1, line2|
+    regexp1 = /#{Regexp.quote(line1)}/
+    regexp2 = /#{Regexp.quote(line2)}/
     regexp = /^#{regexp1}\n\s+#{regexp2}/m
-    its('stdout') { should match(regexp) }
+    describe command('cat /etc/prosody/conf.avail/localhost.cfg.lua') do
+      its('stdout') { should match(regexp) }
+    end
   end
 
   its('content') do
