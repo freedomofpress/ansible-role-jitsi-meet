@@ -1,5 +1,5 @@
 ---
-- name: Set hostname in Jicofo config.
+- name: Copy Jicofo config file.
   template:
     dest: /etc/jitsi/jicofo/config
     src: jicofo_config.j2
@@ -8,7 +8,7 @@
     mode: "0644"
   notify: restart jicofo
 
-- name: Set hostname in Videobridge config.
+- name: Copy Jitsi Videobridge config file.
   template:
     dest: /etc/jitsi/videobridge/config
     src: videobridge_config.j2
@@ -16,4 +16,3 @@
     group: root
     mode: "0644"
   notify: restart jitsi-videobridge
-

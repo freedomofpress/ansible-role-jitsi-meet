@@ -11,5 +11,3 @@ describe file('/etc/jitsi/jicofo/config') do
   its('content') { should match(/^JICOFO_AUTH_PASSWORD=\w{8,}$/) }
   its('content') { should match(/^JICOFO_AUTH_USER=focus$/) }
 end
-
-

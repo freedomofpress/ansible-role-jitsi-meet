@@ -13,4 +13,3 @@
     path: /etc/jitsi/meet/localhost-config.js
     state: absent
   notify: restart jitsi-videobridge
-

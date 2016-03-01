@@ -1,6 +1,6 @@
 ---
 # defaults file for jitsi-meet
-jitsi_meet_hostname: "{{ ansible_fqdn }}"
+jitsi_meet_server_name: "{{ ansible_fqdn }}"
 jitsi_meet_ssl_cert_path: /etc/ssl/fpf_combined.pem
 jitsi_meet_ssl_key_path: /etc/ssl/freedom.key
 
