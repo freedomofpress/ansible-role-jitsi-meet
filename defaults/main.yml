@@ -21,6 +21,9 @@ jitsi_meet_jicofo_password: ''
 jitsi_meet_jicofo_user: focus
 jitsi_meet_jicofo_port: 5347
 
+# The default config file at /etc/jitsi/videobridge/config claims the default port
+# for JVB is "5275", but the manual install guide references "5347".
+# https://github.com/jitsi/jitsi-meet/blob/master/doc/manual-install.md
 jitsi_meet_videobridge_port: 5347
 
 jitsi_meet_disable_third_party_requests: true
