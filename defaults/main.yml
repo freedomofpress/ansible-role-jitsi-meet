@@ -1,11 +1,13 @@
 ---
 # defaults file for jitsi-meet
 jitsi_meet_server_name: "{{ ansible_fqdn }}"
-jitsi_meet_ssl_cert_path: /etc/ssl/fpf_combined.pem
-jitsi_meet_ssl_key_path: /etc/ssl/freedom.key
+
+# The default cert files are /var/lib/prosody/localhost.{crt,key}
+# NOT setting them here because if left undefined the Nginx config will be skipped.
+jitsi_meet_ssl_cert_path: ''
+jitsi_meet_ssl_key_path: ''
 
 jitsi_meet_authentication: anonymous
-
 
 # Hard-coding secrets during development.
 # The Debian package installation of jitsi-meet will generate secrets for the components.
@@ -13,7 +15,6 @@ jitsi_meet_authentication: anonymous
 jitsi_meet_videobridge_secret: ''
 jitsi_meet_jicofo_secret: ''
 jitsi_meet_jicofo_password: ''
-
 
 jitsi_meet_jicofo_user: focus
 jitsi_meet_jicofo_port: 5347
