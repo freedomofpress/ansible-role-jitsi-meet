@@ -30,19 +30,7 @@
     question: "{{ item.question }}"
     value: "{{ item.value }}"
     vtype: "{{ item.vtype }}"
-  with_items:
-    - name: jitsi-meet
-      question: jitsi-meet/jvb-hostname
-      value: "{{ jitsi_meet_server_name }}"
-      vtype: string
-    - name: jitsi-meet
-      question: jitsi-meet/jvb-serve
-      value: "false"
-      vtype: boolean
-    - name: jitsi-meet-prosody
-      question: jitsi-meet-prosody/jvb-hostname
-      value: "{{ jitsi_meet_server_name }}"
-      vtype: string
+  with_items: "{{ jitsi_meet_debconf_settings }}"
   notify:
     - restart jitsi-videobridge
     - restart jicofo

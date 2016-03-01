@@ -1,11 +1,13 @@
 ---
 # defaults file for jitsi-meet
-jitsi_meet_server_name: "{{ ansible_fqdn }}"
 
 # The default cert files are /var/lib/prosody/localhost.{crt,key}
 # NOT setting them here because if left undefined the Nginx config will be skipped.
 jitsi_meet_ssl_cert_path: ''
 jitsi_meet_ssl_key_path: ''
+
+# Without SSL, "localhost" is the correct default.
+jitsi_meet_server_name: "{{ ansible_fqdn if jitsi_meet_ssl_cert_path else 'localhost' }}"
 
 jitsi_meet_authentication: anonymous
 
@@ -22,3 +24,17 @@ jitsi_meet_jicofo_port: 5347
 jitsi_meet_videobridge_port: 5347
 
 jitsi_meet_disable_third_party_requests: true
+
+jitsi_meet_debconf_settings:
+  - name: jitsi-meet
+    question: jitsi-meet/jvb-hostname
+    value: "{{ jitsi_meet_server_name }}"
+    vtype: string
+  - name: jitsi-meet
+    question: jitsi-meet/jvb-serve
+    value: "false"
+    vtype: boolean
+  - name: jitsi-meet-prosody
+    question: jitsi-meet-prosody/jvb-hostname
+    value: "{{ jitsi_meet_server_name }}"
+    vtype: string
