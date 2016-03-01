@@ -1,6 +1,10 @@
 ---
 - include: packages.yml
 
+  # Read Jitsi Meet config files and extract secrets for use in template configs.
+  # Import to run these tasks after package installation, but before config tasks.
+- include: dynamic_vars.yml
+
 - include: prosody.yml
 
 - include: jitsi_meet.yml
