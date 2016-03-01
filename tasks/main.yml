@@ -21,3 +21,4 @@
         jitsi_meet_ssl_key_path != ''
 
 - include: ufw.yml
+  when: jitsi_meet_configure_firewall == true

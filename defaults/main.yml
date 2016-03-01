@@ -38,3 +38,7 @@ jitsi_meet_debconf_settings:
     question: jitsi-meet-prosody/jvb-hostname
     value: "{{ jitsi_meet_server_name }}"
     vtype: string
+
+# Role will automatically install configure ufw with jitsi-meet port holes.
+# If you're managing a firewall elsewise, set this to false, and ufw will be skipped.
+jitsi_meet_configure_firewall: true
