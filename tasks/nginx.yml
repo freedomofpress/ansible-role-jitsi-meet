@@ -7,14 +7,14 @@
     group: root
     mode: "0644"
   notify: restart nginx
+  # Skip unless role was called with custom SSL certs
+  when: jitsi_meet_ssl_cert_path != '' and
+        jitsi_meet_ssl_key_path != ''
 
-- name: Deactivate default Nginx sites.
+- name: Deactivate default Nginx site.
   file:
-    path: /etc/nginx/sites-enabled/{{ item }}
+    path: /etc/nginx/sites-enabled/default
     state: absent
-  with_items:
-    - default
-    - localhost.conf
   notify: restart nginx
 
 - name: Activate custom Jitsi Meet Nginx site.

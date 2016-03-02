@@ -12,9 +12,6 @@
 - include: jicofo.yml
 
 - include: nginx.yml
-  # Skip unless role was called with custom SSL certs
-  when: jitsi_meet_ssl_cert_path != '' and
-        jitsi_meet_ssl_key_path != ''
 
 - include: clean_up_default_configs.yml
   when: jitsi_meet_ssl_cert_path != '' and
