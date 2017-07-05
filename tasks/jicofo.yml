@@ -24,3 +24,27 @@
     line: ".level={{ jitsi_meet_jicofo_loglevel }}"
     state: present
   notify: restart jicofo
+
+- name: Copy jicofo SIP communicator settings.
+  template:
+    dest: "/etc/jitsi/jicofo/sip-communicator.properties"
+    src: sip-communicator.jicofo.j2
+    owner: root
+    group: root
+    mode: "0644"
+  notify: restart jicofo
+
+- name: Create directory for SIP communicator settings.
+  file:
+    state: directory
+    path: /usr/share/jicofo/.sip-communicator
+    owner: jicofo
+    group: jitsi
+
+- name: Symlink SIP communicator settings.
+  file:
+    path: "/usr/share/jicofo/.sip-communicator/sip-communicator.properties"
+    src: "/etc/jitsi/jicofo/sip-communicator.properties"
+    state: link
+    owner: root
+    group: root

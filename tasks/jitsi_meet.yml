@@ -16,6 +16,15 @@
     state: present
   notify: restart jitsi-videobridge
 
+- name: Copy jitsi-videobridge SIP communicator settings.
+  template:
+    dest: "/etc/jitsi/videobridge/sip-communicator.properties"
+    src: sip-communicator.jvb.j2
+    owner: root
+    group: root
+    mode: "0644"
+  notify: restart jitsi-videobridge
+
 - name: Create directory for SIP communicator settings.
   file:
     state: directory
@@ -25,9 +34,10 @@
     owner: jvb
   notify: restart jitsi-videobridge
 
-- name: Write SIP communicator settings.
-  copy:
-    dest: /usr/share/jitsi-videobridge/.sip-communicator/sip-communicator.properties
-    content: "org.jitsi.impl.neomedia.transform.srtp.SRTPCryptoContext.checkReplay=false"
-    owner: jvb
-  notify: restart jitsi-videobridge
+- name: Symlink SIP communicator settings.
+  file:
+    path: "/usr/share/jitsi-videobridge/.sip-communicator/sip-communicator.properties"
+    src: "/etc/jitsi/videobridge/sip-communicator.properties"
+    state: link
+    owner: root
+    group: root
