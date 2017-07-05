@@ -11,15 +11,21 @@ VirtualHost "{{ jitsi_meet_server_name }}"
         "ping";
     }
 
+    c2s_require_encryption = false
+
 VirtualHost "auth.{{ jitsi_meet_server_name }}"
     authentication = "internal_plain"
 
 Component "conference.{{ jitsi_meet_server_name }}" "muc"
+    storage = "null"
 
 admins = { "focus@auth.{{ jitsi_meet_server_name }}" }
 
 Component "jitsi-videobridge.{{ jitsi_meet_server_name }}"
      component_secret = "{{ jitsi_meet_videobridge_secret }}"
+
+VirtualHost "auth.{{ jitsi_meet_server_name }}"
+    authentication = "internal_plain"
 
 Component "focus.{{ jitsi_meet_server_name }}"
      component_secret = "{{ jitsi_meet_jicofo_secret }}"

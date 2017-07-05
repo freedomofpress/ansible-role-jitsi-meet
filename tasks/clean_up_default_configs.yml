@@ -19,6 +19,15 @@
     state: absent
   notify: restart prosody
 
+- name: Remove default localhost Prosody TLS certs and keys.
+  file:
+    path: "{{ item[0] }}/localhost.{{ item[1] }}"
+    state: absent
+  notify: restart prosody
+  with_nested:
+    - [ "/etc/prosody/certs", "/var/lib/prosody" ]
+    - [ "key", "crt" ]
+
   # The "server_names_hash_bucket_size" directive should only occur once in the
   # Nginx config. If it's duplicated, even only in "available" sites rather than
   # "enabled", nginx will fail to start. Since this role writes it in a template

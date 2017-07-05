@@ -34,13 +34,6 @@
     filename: /etc/apt/sources.list.d/jitsi_meet
   with_dict: "{{ jitsi_meet_apt_repos }}"
 
-- name: Install Jitsi Meet
-  apt:
-    name: jitsi-meet
-    state: latest
-    update_cache: yes
-    cache_valid_time: 3600
-
 - name: Set debconf options for jitsi-meet.
   debconf:
     name: "{{ item.name }}"
@@ -48,7 +41,10 @@
     value: "{{ item.value }}"
     vtype: "{{ item.vtype }}"
   with_items: "{{ jitsi_meet_debconf_settings }}"
-  notify:
-    - restart jitsi-videobridge
-    - restart jicofo
-    - restart prosody
+
+- name: Install Jitsi Meet
+  apt:
+    name: jitsi-meet
+    state: latest
+    update_cache: yes
+    cache_valid_time: 3600
