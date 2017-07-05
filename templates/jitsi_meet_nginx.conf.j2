@@ -1,17 +1,17 @@
 server_names_hash_bucket_size 64;
 
 server {
-    listen 80;
+    listen 80 default_server;
     server_name {{ jitsi_meet_server_name }};
     return 301 https://$host$request_uri;
 }
 server {
-    listen 443 ssl;
+    listen 443 ssl default_server;
     server_name {{ jitsi_meet_server_name }};
 
-    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    ssl_protocols TLSv1.2;
     ssl_prefer_server_ciphers on;
-    ssl_ciphers "EECDH+ECDSA+AESGCM:EECDH+aRSA+AESGCM:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA256:EECDH+ECDSA+SHA384:EECDH+ECDSA+SHA256:EECDH+aRSA+SHA384:EDH+aRSA+AESGCM:EDH+aRSA+SHA256:EDH+aRSA:EECDH:!aNULL:!eNULL:!MEDIUM:!LOW:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS:!RC4:!SEED";
+    ssl_ciphers "EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH";
 
     add_header Strict-Transport-Security "max-age=31536000";
 
@@ -38,5 +38,15 @@ server {
         proxy_pass      http://localhost:5280/http-bind;
         proxy_set_header X-Forwarded-For $remote_addr;
         proxy_set_header Host $http_host;
+    }
+
+    # WebSocket
+    location /xmpp-websocket {
+        proxy_pass http://localhost:5280;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        tcp_nodelay on;
     }
 }
