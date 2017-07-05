@@ -37,3 +37,34 @@
   notify:
     - restart jicofo
     - restart prosody
+
+- name: Define permissions of Prosody TLS certificates and keys.
+  set_fact:
+    prosody_tls_basename: [ "{{ jitsi_meet_server_name }}" ]
+    prosody_tls_files:
+      - { extension: 'crt', mode: '0644' }
+      - { extension: 'key', mode: '0600' }
+
+- name: Symlink Prosody TLS certificates and keys.
+  file:
+    path: "/etc/prosody/certs/{{ item[0] }}.{{ item[1].extension }}"
+    src: "/var/lib/prosody/{{ item[0] }}.{{ item[1].extension }}"
+    state: link
+    owner: prosody
+    group: prosody
+  notify: restart prosody
+  with_nested:
+    - "{{ prosody_tls_basename }}"
+    - "{{ prosody_tls_files }}"
+
+- name: Ensure correct permissions of Prosody TLS certificates and keys.
+  file:
+    path: "/var/lib/prosody/{{ item[0] }}.{{ item[1].extension }}"
+    owner: prosody
+    group: prosody
+    mode: "{{ item[1].mode }}"
+    state: file
+  notify: restart prosody
+  with_nested:
+    - "{{ prosody_tls_basename }}"
+    - "{{ prosody_tls_files }}"
