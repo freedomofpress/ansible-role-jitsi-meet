@@ -169,7 +169,7 @@ See the [Molecule] docs for more info.
 License
 -------
 
-MIT
+[MIT](./LICENSE.txt)
 
 Author Information
 ------------------
