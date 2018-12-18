@@ -6,7 +6,7 @@
   register: jitsi_meet_videobridge_secret_result
   failed_when: jitsi_meet_videobridge_secret_result.rc != 0 or
                jitsi_meet_videobridge_secret_result.stdout == ''
-  always_run: true
+  check_mode: no
   changed_when: false
 
 - name: Set fact for Jitsi Videobridge secret var.
@@ -22,7 +22,7 @@
     /etc/jitsi/jicofo/config
   register: jitsi_meet_jicofo_secret_result
   changed_when: false
-  always_run: true
+  check_mode: no
   failed_when: jitsi_meet_jicofo_secret_result.rc != 0 or
                jitsi_meet_jicofo_secret_result.stdout == ''
 
@@ -39,7 +39,7 @@
     /etc/jitsi/jicofo/config
   register: jitsi_meet_jicofo_password_result
   changed_when: false
-  always_run: true
+  check_mode: no
   failed_when: jitsi_meet_jicofo_password_result.rc != 0 or
                jitsi_meet_jicofo_password_result.stdout == ''
 
