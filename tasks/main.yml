@@ -1,28 +1,54 @@
 ---
+
 - include: packages.yml
+  tags: jitsi_packages
 
   # Read Jitsi Meet config files and extract secrets for use in template configs.
   # Import to run these tasks after package installation, but before config tasks.
 - include: dynamic_vars.yml
-
-- include: prosody.yml
+  tags: always
 
 - include: jitsi_meet.yml
+  tags: jitsi_meet
 
 - include: jicofo.yml
+  tags: jitsi_jicofo
+
+- include: prosody.yml
+  tags: jitsi_prosody
+
+- include: sip_gateway.yml
+  tags: jitsi_sip
+  when: jitsi_meet_configure_sip_gateway | bool
+
+- include: videobridge.yml
+  tags: jitsi_videobridge
 
 - include: nginx.yml
-  when: jitsi_meet_configure_nginx
-
-- include: clean_up_default_configs.yml
-  when: (jitsi_meet_ssl_cert_path != '' and
-         jitsi_meet_ssl_key_path != '') or
-         not jitsi_meet_configure_nginx
-
+  tags: jitsi_nginx
+  when:
+    - jitsi_meet_configure_nginx | bool
+    - jitsi_meet_ssl_cert_path | length > 0
+    - jitsi_meet_ssl_key_path | length > 0
 
 - include: ufw.yml
-  when: jitsi_meet_configure_firewall == true
+  tags: jitsi_ufw
+  when: jitsi_meet_configure_firewall | bool
+
+- include: clean_up_default_configs.yml
+  tags: jitsi_clean
+  when: jitsi_meet_server_name != 'localhost'
+
+  # Official recommended tweaks
+- include: systemd.yml
+  tags: jitsi_systemd
+
+- include: ui_customization.yml
+  tags: jitsi_ui
+  when: jitsi_meet_customize_the_ui | bool
 
   # Placing the browser extensions last so the associated debugging tasks
   # that display URLs are visible near the end of the play.
+  # Build your own with https://github.com/jitsi/jidesha
 - include: browser_extensions.yml
+  tags: jitsi_browser_extensions

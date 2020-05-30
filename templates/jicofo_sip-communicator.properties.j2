@@ -1,0 +1,5 @@
+org.jitsi.jicofo.BRIDGE_MUC=JvbBrewery@internal.auth.{{ jitsi_meet_server_name }}
+org.jitsi.jicofo.ALWAYS_TRUST_MODE_ENABLED=true
+{% if jitsi_meet_authentication != 'anonymous' %}
+org.jitsi.jicofo.auth.URL=XMPP:{{ jitsi_meet_server_name }}
+{% endif %}

@@ -1,33 +1,14 @@
 ---
+
 - name: Copy Jitsi Meet JS config file.
   template:
     dest: "/etc/jitsi/meet/{{ jitsi_meet_server_name }}-config.js"
-    src: jitsi_meet_config.js.j2
+    src: "{{ jitsi_meet_config_js_template }}"
     owner: root
     group: root
     mode: "0644"
-  notify: restart jitsi-videobridge
-
-- name: Set jitsi-videobridge log level.
-  lineinfile:
-    dest: /etc/jitsi/videobridge/logging.properties
-    regexp: '^\.level'
-    line: ".level={{ jitsi_meet_videobridge_loglevel }}"
-    state: present
-  notify: restart jitsi-videobridge
-
-- name: Create directory for SIP communicator settings.
-  file:
-    state: directory
-    # Hard-coding homedir path and username because they're configured via
-    # the jitsi-meet postinst scripts, so these values must match.
-    path: /usr/share/jitsi-videobridge/.sip-communicator
-    owner: jvb
-  notify: restart jitsi-videobridge
-
-- name: Write SIP communicator settings.
-  copy:
-    dest: /usr/share/jitsi-videobridge/.sip-communicator/sip-communicator.properties
-    content: "org.jitsi.impl.neomedia.transform.srtp.SRTPCryptoContext.checkReplay=false"
-    owner: jvb
-  notify: restart jitsi-videobridge
+  notify:
+    - restart nginx
+    - restart jitsi-videobridge
+    - restart jicofo
+    - restart prosody

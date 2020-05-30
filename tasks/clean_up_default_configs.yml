@@ -1,4 +1,5 @@
 ---
+
 - name: Remove default localhost Jitsi Meet config file.
   file:
     path: /etc/jitsi/meet/localhost-config.js
@@ -33,5 +34,5 @@
     - /etc/nginx/sites-available/localhost.conf
     - /etc/nginx/sites-enabled/localhost.conf
   # Only remove the "localhost" file if we're using custom SSL keys, i.e. in prod.
-  when: jitsi_meet_ssl_cert_path != '' and
-        jitsi_meet_ssl_key_path != ''
+  when: jitsi_meet_ssl_cert_path and
+        jitsi_meet_ssl_key_path

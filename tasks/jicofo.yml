@@ -1,21 +1,13 @@
 ---
+
 - name: Copy Jicofo config file.
   template:
     dest: /etc/jitsi/jicofo/config
-    src: jicofo_config.j2
+    src: "{{ jitsi_meet_jicofo_config_template }}"
     owner: root
     group: root
     mode: "0644"
   notify: restart jicofo
-
-- name: Copy Jitsi Videobridge config file.
-  template:
-    dest: /etc/jitsi/videobridge/config
-    src: videobridge_config.j2
-    owner: root
-    group: root
-    mode: "0644"
-  notify: restart jitsi-videobridge
 
 - name: Set Jicofo log level.
   lineinfile:
@@ -23,4 +15,12 @@
     regexp: '^\.level'
     line: ".level={{ jitsi_meet_jicofo_loglevel }}"
     state: present
+  notify: restart jicofo
+
+- name: Jicofo sip-communicator properties
+  become: yes
+  template:
+    src: "{{ jitsi_meet_jicofo_sip_template }}"
+    dest: /etc/jitsi/jicofo/sip-communicator.properties
+    mode: 0644
   notify: restart jicofo

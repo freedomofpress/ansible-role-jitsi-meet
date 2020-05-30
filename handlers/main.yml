@@ -1,13 +1,8 @@
 ---
-# handlers file for jitsi-meet
-- name: restart nginx
-  service:
-    name: nginx
-    state: restarted
 
-- name: restart prosody
+- name: restart jitsi-videobridge
   service:
-    name: prosody
+    name: jitsi-videobridge2
     state: restarted
 
 - name: restart jicofo
@@ -15,7 +10,16 @@
     name: jicofo
     state: restarted
 
-- name: restart jitsi-videobridge
+- name: restart prosody
   service:
-    name: jitsi-videobridge
+    name: prosody
     state: restarted
+
+- name: restart nginx
+  service:
+    name: nginx
+    state: restarted
+
+- name: reload systemctl
+  systemd:
+    daemon_reload: yes

@@ -1,11 +1,11 @@
 ---
+
 - name: Install base apt packages.
   apt:
-    name: "{{ item }}"
+    name: "{{ jitsi_meet_base_packages }}"
     state: present
     update_cache: yes
     cache_valid_time: 3600
-  with_items: "{{ jitsi_meet_base_packages }}"
 
 # Prior versions of the role were writing to this file, let's
 # clean it up and use a generalized filename for configuring the apt repo,
@@ -22,8 +22,8 @@
 # Both stable and unstable repos use the same signing key.
 - name: Configure signing key for Jitsi repository.
   apt_key:
-    id: 66A9CD0595D6AFA247290D3BEF8B479E2DC1389C
-    url: "https://download.jitsi.org/jitsi-key.gpg.key"
+    id: "{{ jitsi_meet_apt_key_id }}"
+    url: "{{ jitsi_meet_apt_key_url }}"
     state: present
 
 - name: Install Jitsi apt repo.
@@ -32,14 +32,8 @@
     state: "{{ 'present' if jitsi_strategy == item.key else 'absent' }}"
     # Ansible will automatically add the ".list" suffix.
     filename: /etc/apt/sources.list.d/jitsi_meet
-  with_dict: "{{ jitsi_meet_apt_repos }}"
-
-- name: Install Jitsi Meet
-  apt:
-    name: jitsi-meet
-    state: latest
     update_cache: yes
-    cache_valid_time: 3600
+  with_dict: "{{ jitsi_meet_apt_repos }}"
 
 - name: Set debconf options for jitsi-meet.
   debconf:
@@ -48,7 +42,9 @@
     value: "{{ item.value }}"
     vtype: "{{ item.vtype }}"
   with_items: "{{ jitsi_meet_debconf_settings }}"
-  notify:
-    - restart jitsi-videobridge
-    - restart jicofo
-    - restart prosody
+
+- name: Install Jitsi Meet
+  apt:
+    name: jitsi-meet
+    state: present
+    install_recommends: "{{ jitsi_meet_install_recommends }}"

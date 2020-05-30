@@ -1,15 +1,13 @@
 ---
+
 - name: Copy Nginx config for Jitsi Meet domain.
   template:
     dest: "/etc/nginx/sites-available/{{ jitsi_meet_server_name }}.conf"
-    src: jitsi_meet_nginx.conf.j2
+    src: "{{ jitsi_meet_nginx_config_template }}"
     owner: root
     group: root
     mode: "0644"
   notify: restart nginx
-  # Skip unless role was called with custom SSL certs
-  when: jitsi_meet_ssl_cert_path != '' and
-        jitsi_meet_ssl_key_path != ''
 
 - name: Deactivate default Nginx site.
   file:

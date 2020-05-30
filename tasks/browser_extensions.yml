@@ -1,11 +1,13 @@
 ---
+
 - name: Copy Chrome web browser extension.
+  # Build your own with https://github.com/jitsi/jidesha
   copy:
     src: "{{ jitsi_meet_desktop_sharing_chrome_extension_filename }}"
     dest: "/usr/share/jitsi-meet/{{ jitsi_meet_desktop_sharing_chrome_extension_filename | basename }}"
   notify: restart nginx
   when: jitsi_meet_desktop_sharing_chrome_extension_filename is defined and
-        jitsi_meet_desktop_sharing_chrome_extension_filename != ''
+        jitsi_meet_desktop_sharing_chrome_extension_filename
 
 - name: Display URL for downloading Chrome web browser extension.
   debug:
@@ -15,4 +17,4 @@
       'https://{{ jitsi_meet_server_name }}/{{ jitsi_meet_desktop_sharing_chrome_extension_filename | basename }}',
       then drag-and-drop onto the chrome://extensions page.
   when: jitsi_meet_desktop_sharing_chrome_extension_filename is defined and
-        jitsi_meet_desktop_sharing_chrome_extension_filename != ''
+        jitsi_meet_desktop_sharing_chrome_extension_filename

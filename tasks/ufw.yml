@@ -1,24 +1,23 @@
 ---
+
 - name: Install ufw package.
   apt:
     name: ufw
     state: present
 
-- name: Specify allowed ports in firewall config.
+- name: Specify allowed TCP ports in firewall config.
   ufw:
     rule: allow
     port: "{{ item }}"
     proto: tcp
-  with_items:
-    - 22
-    - 80
-    - 443
+  with_items: "{{ jitsi_meet_firewall_ports_allow.tcp }}"
 
-- name: Open UDP port 10000 for jitsi-videobridge
+- name: Specify allowed UDP ports in firewall config.
   ufw:
     rule: allow
-    port: 10000
+    port: "{{ item }}"
     proto: udp
+  with_items: "{{ jitsi_meet_firewall_ports_allow.udp }}"
 
 - name: Ensure UFW is running.
   ufw:

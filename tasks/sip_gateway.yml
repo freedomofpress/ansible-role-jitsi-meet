@@ -1,0 +1,22 @@
+---
+
+- name: Install jigasi
+  apt:
+    name: jigasi
+    state: present
+
+- name: Set debconf options for jigasi
+  debconf:
+    name: "{{ item.name }}"
+    question: "{{ item.question }}"
+    value: "{{ item.value }}"
+    vtype: "{{ item.vtype }}"
+  with_items:
+    - name: jigasi
+      question: jigasi/sip-account
+      value: "{{ jitsi_meet_jigasi_account }}"
+      vtype: string
+    - name: jigasi
+      question: jigasi/sip-password
+      value: "{{ jitsi_meet_jigasi_password }}"
+      vtype: string
